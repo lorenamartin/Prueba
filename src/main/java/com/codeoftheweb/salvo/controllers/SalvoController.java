@@ -99,6 +99,5 @@ public Map<String, Object> getGames(Authentication authentication){
         map.put(key, value);
         return map;
     }
-holi
 
 }
