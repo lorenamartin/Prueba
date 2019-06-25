@@ -1,3 +1,18 @@
+var app = new Vue({
+	el: '#game',
+	data: {
+		games: {},
+		player: {},
+		stats: {},
+		table: '<tr> <th>Name</th> <th>Total</th> <th>Won</th> <th>Lost</th> <th>Tied</th></tr>',
+		list: [],
+		score: 0,
+		won: 0,
+		lost: 0,
+		tied: 0,
+		leaderboard: {}
+	}
+});
 
 let gamesData
 
@@ -9,6 +24,7 @@ const loadData = () => {
 	.then(response => response.json())
 	.then(json => {
 		gamesData = json.games
+		app.player = json.player
 		changeDateFormat()
 		gamesTable()
 		leaderTable(leaderboard(), document.getElementById('leaderboard'))
@@ -90,7 +106,7 @@ const leaderboard = () => {
 				aux.push(gamePlayer.player.id)
 				let obj = {}
 				obj.id = gamePlayer.player.id
-				obj.email = gamePlayer.player.email
+				obj.username = gamePlayer.player.username
 				obj.score = gamePlayer.score
 				obj.won = gamePlayer.score == 3 ? 1 : 0
 				obj.lost = gamePlayer.score == 0 ? 1 : 0
@@ -134,4 +150,32 @@ const leaderTable = (leaders, table) => {
 
 	table.appendChild(head)
 	table.appendChild(body)
+
+}
+
+function login(evt) {
+	evt.preventDefault(evt);
+	var form = evt.target.form;
+	$.post("/api/login", {
+		username: form["username"].value,
+		password: form["password"].value
+	}).done(function(){
+	    console.log("logged in")
+	}).fail(function(response){
+	    console.log(response)
+	});
+}
+
+function logout(evt) {
+	evt.preventDefault();
+	$.post("/api/logout");
+}
+
+function signin(evt) {
+	evt.preventDefault(evt);
+	var form = evt.target.form;
+	$.post("/api/players", {
+		username: form["username"].value,
+		password: form["password"].value
+	});
 }

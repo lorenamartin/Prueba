@@ -88,11 +88,14 @@ public Map<String, Object> getGames(Authentication authentication){
         }
         Player player= playerRepo.findByUserName(username);
         if (player != null) {
-            return new ResponseEntity<>(makeMap("error", "Username already exists"), HttpStatus.CONFLICT);
+            return  new ResponseEntity<>(makeMap("error", "Username already exists"), HttpStatus.CONFLICT);
         }
         Player newPlayer = playerRepo.save(new Player(username, passwordEncoder.encode(password)));
-        return new ResponseEntity<>(makeMap("player", newPlayer.getUserName()), HttpStatus.CREATED);
-    }
+          return  new ResponseEntity<>(makeMap("player", newPlayer.getUserName()), HttpStatus.CREATED);
+
+
+}
+
 
     private Map<String, Object> makeMap(String key, Object value) {
         Map<String, Object> map = new HashMap<>();

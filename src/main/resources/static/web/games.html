@@ -7,21 +7,39 @@
         <link rel="stylesheet" type="text/css" href="styles/main.css">
     </head>
 <body>
-
+<div id="game">
 	<h1 class="title">Salvo Battleship</h1>
+    <form id="login-form" onsubmit="return false" v-if="player == 'guest'">
+        <h2>Login</h2>
+        <label>Username: <input type="text" name="username"></label>
+        <label>Password: <input type="text" name="password"></label>
+        <button id="login-button" onclick="login(event)">Log in</button>
+        <button id="signin-button" onclick="signin(event)">Sign in</button>
+    </form>
+
+    <form id="logout-form" onsubmit="return false" v-if="player != 'guest'">
+        <button id="logout-button" onclick="logout(event)">Log out</button>
+    </form>
+
+    <button id="creategame-button" v-if="player != 'guest'" onclick="creategame(event)">Create Game</button>
+
 
 	<div class="flex-container">
 		<table id="games-table"></table>
     
     	<table id="leaderboard"></table>
 	</div>
-
+</div>
 
 
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="scripts/games.js"></script>
+
+
+
 </body>
 </html>
