@@ -106,7 +106,7 @@ const leaderboard = () => {
 				aux.push(gamePlayer.player.id)
 				let obj = {}
 				obj.id = gamePlayer.player.id
-				obj.username = gamePlayer.player.username
+				obj.username = gamePlayer.player.userName
 				obj.score = gamePlayer.score
 				obj.won = gamePlayer.score == 3 ? 1 : 0
 				obj.lost = gamePlayer.score == 0 ? 1 : 0
@@ -178,4 +178,16 @@ function signin(evt) {
 		username: form["username"].value,
 		password: form["password"].value
 	});
+}
+
+function joingame(evt) {
+	evt.preventDefault(evt);
+	nn = evt.target.dataset.id
+	$.post("/api/game/" + nn + "/players")
+		.done(
+			function (response) {
+				window.location.href = "game.html?gp=" + response.gamePlayer_id
+		}).failed(function (response) {
+	alert(response.statusText)
+})
 }

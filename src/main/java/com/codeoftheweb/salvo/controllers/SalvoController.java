@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public Map<String, Object> getGames(Authentication authentication){
     }
 
 @RequestMapping(path = "/players", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> createUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<Map<String, Object>>createUser(@RequestParam String username, @RequestParam String password) {
         if (username.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>(makeMap("error", "No data"), HttpStatus.FORBIDDEN);
         }
@@ -102,5 +103,68 @@ public Map<String, Object> getGames(Authentication authentication){
         map.put(key, value);
         return map;
     }
+
+}
+                        /*"/games"*/
+@RequestMapping(path = "/games/" , method=RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>>createGames(Authentication authentication){
+    /*ResponseEntity response;*/
+    ResponseEntity<Map<String, Object>> response;
+    if(isGuest(authentication)){
+        response = new ResponseEntity<>(makeMap("error", "not logged in"), HttpStatus.UNAUTHORIZED);
+    }else{
+        Game game = new Game(LocalDateTime.now());
+        /*Game game = gameRepo.save(new Game(LocalDateTime.now()));*/
+        Player player = playerRepo.findByUserName(authentication.getName());
+        GamePlayer gamePlayer = new GamePlayer(player, game, LocalDateTime.now());
+        gamePlayerRepo.save(gamePlayer);
+        response = new ResponseEntity<>(makeMap("gpId", "gamePlayer.getId"), HttpStatus.CREATED);
+    }
+    return response;
+}
+
+
+
+
+@PostMapping(path= "games/{gameID}/players" , method=RequestMethod.POST)
+public ResponseEntity<Map<String, Object>> joinGames(Authentication authentication, @PathVariable long gameID) {
+    ResponseEntity<Map<String, Object>> response;
+    Game game = gameRepo.findById(gameID).orElse(null);
+    Player player = playerRepo.findByUserName(authentication.getName());
+    if (isGuest(authentication)) {
+        response = new ResponseEntity<>(makeMap("error", "not logged in"), HttpStatus.UNAUTHORIZED);
+    } else if (game == null) {
+        response = new ResponseEntity<>(makeMap("error", "that game does not exist"), HttpStatus.BAD_REQUEST);
+    } else if (game.getGamePlayers().stream().anyMatch(gp -> gp.getPlayer().getId() == player.getId())) {
+        response = new ResponseEntity<>(makeMap("error", "the game is full"), HttpStatus.FORBIDDEN);
+    } else if (game.getGamePlayers().size() > 1) {
+        response = new ResponseEntity<>(makeMap("error", "the game is full"), HttpStatus.FORBIDDEN);
+    }else{
+    GamePlayer gamePlayer = new GamePlayer(player, game, LocalDateTime.now());
+    gamePlayerRepo.save(gamePlayer);
+    response = new ResponseEntity<>(makeMap("gamePlayerId", gamePlayer.getId()), HttpStatus.CREATED);
+    }
+ return response;
+         }
+
+@PostMapping("games/players/{gpID}/ships")
+public ResponseEntity<Map<String, Object>> addShips (Authentication authentication, @PathVariable long gpID) {
+
+    @RequestBody List<Ship> ships {
+        ResponseEntity<Map<String, Object>> response;
+        Player player = playerRepo.findByUserName(authentication.getName());
+        GamePlayer gamePlayer = new GamePlayer(player, game, LocalDateTime.now()).orEles(null)
+        if (isGuest(authentication)) {
+            response = new ResponseEntity<>(makeMap("error", "you mast be loggued"), HttpStatus.UNAUTHORIZED);
+        } else if (gamePlayer = null) {
+            response = ResponseEntity(makeMap("error", "", HttpStatus.BAD_REQUEST))
+        } else if (gamePlayer.getPlayer().getId() != player.getId()){
+        }    else if (gamePlayer.getShips().size() > 0){
+             else if (ships.size() != 5)
+    }
+
+    ships.stream().forEach(ship -> {gamePlayer.addShip(ship)}
+
+    gamePlayerRepo.save(gamePlayer));
 
 }
