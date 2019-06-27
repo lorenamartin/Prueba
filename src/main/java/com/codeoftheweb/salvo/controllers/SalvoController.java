@@ -160,7 +160,13 @@ public ResponseEntity<Map<String, Object>> addShips (Authentication authenticati
             response = ResponseEntity(makeMap("error", "", HttpStatus.BAD_REQUEST))
         } else if (gamePlayer.getPlayer().getId() != player.getId()){
         }    else if (gamePlayer.getShips().size() > 0){
-             else if (ships.size() != 5)
+            response = new ResponseEntity<>(makeMap("error", "you've already placed ships"), HttpStatus.NOT_FOUND);
+        } else {
+
+             else if (ships.size() != 5){
+                response = new ResponseEntity<>(makeMap("error", "you need 5 ships to play"), HttpStatus.FORBIDDEN);
+            } else {
+            }
     }
 
     ships.stream().forEach(ship -> {gamePlayer.addShip(ship)}
