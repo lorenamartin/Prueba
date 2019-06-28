@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 public class Salvo {
@@ -58,8 +59,19 @@ public class Salvo {
         dto.put("player",this.getGamePlayer().getPlayer().getId());
         dto.put("locations", this.getLocations());
         dto.put("turn", this.getTurn());
+        dto.put("hits", this.getHits());
         return dto;
     }
+/*metodo privado que calcula los hits*/
+    private List<String>getHits(){
+    List<String>hits = new ArrayList<>();
+    GamePlayer opponent = this.getGamePlayer().getGame().getGamePlayers().stream().filter(gamePlayer->gamePlayer.getId()
+    !=this.getGamePlayer().getId()).findFirst().orElse(null);
 
-
+if (opponent !=null){
+    hits = this.getLocations().stream().filter(loc->opponent.getShips().stream().anyMatch(ship->ship.getlocations().contains(loc))).collect(Collectors.toList());/*se fija si la locacion es alguna del barco enemigo*/
+    }
+return hits;
 }
+}
+
