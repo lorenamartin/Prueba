@@ -186,8 +186,18 @@ function joingame(evt) {
 	$.post("/api/game/" + nn + "/players")
 		.done(
 			function (response) {
-				window.location.href = "game.html?gp=" + response.gamePlayer_id
-		}).failed(function (response) {
+				window.location.href = "game.html?gp=" + response.gamePlayerId
+		}).fail(function (response) {
 	alert(response.statusText)
 })
+}
+
+function creategame(evt) {
+	evt.preventDefault(evt);
+	$.post("/api/games")
+		.done(function (response) {
+			window.location.href = "game.html?gp=" + response.gamePlayerId
+		}).fail(function (response) {
+			alert(response.statusText)
+		})
 }

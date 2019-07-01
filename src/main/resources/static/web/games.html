@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Salvo</title>
@@ -21,7 +21,21 @@
         <button id="logout-button" onclick="logout(event)">Log out</button>
     </form>
 
+
     <button id="creategame-button" v-if="player != 'guest'" onclick="creategame(event)">Create Game</button>
+
+
+    <ol >
+        <li v-for="game in games.games">Game #{{game.game_id}} Creation Date: {{game.created}}:
+            <ul>
+                <li v-for="gamePlayer in game.gamePlayers">{{gamePlayer.player.email}} <a
+                        :href="'game.html?gp=' + gamePlayer.gamePlayer_id" :data-id="gamePlayer.gamePlayer_id"
+                        onclick="joingame(event)"> Join </a></li>
+            </ul>
+        </li>
+    </ol>
+
+
 
 
 	<div class="flex-container">
@@ -37,7 +51,9 @@
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
     <script src="scripts/games.js"></script>
+
 
 
 

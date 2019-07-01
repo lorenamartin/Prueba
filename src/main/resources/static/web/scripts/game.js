@@ -1,4 +1,3 @@
-
 var gamesData
 var actualPlayer
 var opponent

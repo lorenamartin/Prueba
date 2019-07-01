@@ -25,7 +25,7 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
         auth.userDetailsService(inputUserName-> {
             Player player = playerRepository.findByUserName(inputUserName);
             if (player != null) {
-                if(player.getUserName().equals("rodrigogarcíaribeiro")){
+                if(player.getUserName().equals("administrador@gmail.gov")){
                     return new User(player.getUserName(), player.getPassword(),
                             AuthorityUtils.createAuthorityList("ADMIN"));
                 } else {

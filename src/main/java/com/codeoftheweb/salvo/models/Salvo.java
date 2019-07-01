@@ -68,10 +68,10 @@ public class Salvo {
     GamePlayer opponent = this.getGamePlayer().getGame().getGamePlayers().stream().filter(gamePlayer->gamePlayer.getId()
     !=this.getGamePlayer().getId()).findFirst().orElse(null);
 
-if (opponent !=null){
-    hits = this.getLocations().stream().filter(loc->opponent.getShips().stream().anyMatch(ship->ship.getlocations().contains(loc))).collect(Collectors.toList());/*se fija si la locacion es alguna del barco enemigo*/
+    if (opponent !=null){
+        hits = this.getLocations().stream().filter(loc->opponent.getShips().stream().anyMatch(ship->ship.getlocations().contains(loc))).collect(Collectors.toList());/*se fija si la locacion es alguna del barco enemigo*/
     }
-return hits;
-}
+    return hits;
+    }
 }
 

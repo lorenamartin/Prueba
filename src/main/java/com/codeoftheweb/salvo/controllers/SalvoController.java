@@ -107,17 +107,17 @@ public Map<String, Object> getGames(Authentication authentication){
 
 
 @RequestMapping(path = "/games" , method=RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>>createGames(Authentication authentication){
+    public ResponseEntity<Map<String, Object>>creategame(Authentication authentication){
     ResponseEntity<Map<String, Object>> response;
     if(isGuest(authentication)){
         response = new ResponseEntity<>(makeMap("error", "not logged in"), HttpStatus.UNAUTHORIZED);
     }else{
         Game game = new Game(LocalDateTime.now());
-        /*Game game = gameRepo.save(new Game(LocalDateTime.now()));*/
+        gameRepo.save(game);
         Player player = playerRepo.findByUserName(authentication.getName());
         GamePlayer gamePlayer = new GamePlayer(player, game, LocalDateTime.now());
         gamePlayerRepo.save(gamePlayer);
-        response = new ResponseEntity<>(makeMap("gpId", "gamePlayer.getId"), HttpStatus.CREATED);
+        response = new ResponseEntity<>(makeMap("gamePlayerId", gamePlayer.getId()), HttpStatus.CREATED);
     }
     return response;
 }
@@ -126,7 +126,7 @@ public Map<String, Object> getGames(Authentication authentication){
 
 
 @PostMapping(path= "/games/{gameID}/players")
-public ResponseEntity<Map<String, Object>> joinGames(Authentication authentication, @PathVariable long gameId) {
+public ResponseEntity<Map<String, Object>> joingame(Authentication authentication, @PathVariable long gameId) {
     ResponseEntity<Map<String, Object>> response;
     Game game = gameRepo.findById(gameId).orElse(null);
     Player player = playerRepo.findByUserName(authentication.getName());
