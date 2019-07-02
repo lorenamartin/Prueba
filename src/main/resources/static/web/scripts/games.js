@@ -24,6 +24,7 @@ const loadData = () => {
 	.then(response => response.json())
 	.then(json => {
 		gamesData = json.games
+		app.games = json.games
 		app.player = json.player
 		changeDateFormat()
 		gamesTable()

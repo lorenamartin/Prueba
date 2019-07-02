@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:v-on="http://www.w3.org/1999/xhtml">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Salvo</title>
@@ -9,34 +8,40 @@
 <body>
 <div id="game">
 	<h1 class="title">Salvo Battleship</h1>
-    <form id="login-form" onsubmit="return false" v-if="player == 'guest'">
+    <form onsubmit="return false" v-if="player == 'guest'">
+        <fieldset>
         <h2>Login</h2>
+        <div>
         <label>Username: <input type="text" name="username"></label>
         <label>Password: <input type="text" name="password"></label>
-        <button id="login-button" onclick="login(event)">Log in</button>
-        <button id="signin-button" onclick="signin(event)">Sign in</button>
+        </div>
+        </fieldset>
+        <button id="login-btn" onclick="login(event)">Login</button>
+        <button id="signin-btn" onclick="signin(event)">Sign in</button>
+    </form>
+
+    <form onsubmit="return false" v-if="player == 'guest'" >
     </form>
 
     <form id="logout-form" onsubmit="return false" v-if="player != 'guest'">
-        <button id="logout-button" onclick="logout(event)">Log out</button>
+        <button onclick="logout(event)">Logout</button>
     </form>
 
+    <form v-if="player != 'guest'" >
+    <button onclick="creategame(event)">Create Game</button>
 
-    <button id="creategame-button" v-if="player != 'guest'" onclick="creategame(event)">Create Game</button>
-
-
+    <div  class="row">
     <ol >
-        <li v-for="game in games.games">Game #{{game.game_id}} Creation Date: {{game.created}}:
+        <li v-for="game in games">Game #{{game.game_id}} Creation Date: {{game.created}}:
             <ul>
                 <li v-for="gamePlayer in game.gamePlayers">{{gamePlayer.player.email}} <a
-                        :href="'game.html?gp=' + gamePlayer.gamePlayer_id" :data-id="gamePlayer.gamePlayer_id"
-                        onclick="joingame(event)"> Join </a></li>
+                        :href="'game.html?gp=' + gamePlayer.GamePlayerID" :data-id="gamePlayer.GamePlayerID"
+                        v-if="player.email == gamePlayer.player.email"> Enter</a><a href="#" v-if="(game.gamePlayer.length == 1) && (gamePlayer.player.email != player.email)" onclick="join(event)" :data-id="games.gameID">Join</a>
+                </li>
             </ul>
         </li>
     </ol>
-
-
-
+    </div>
 
 	<div class="flex-container">
 		<table id="games-table"></table>
