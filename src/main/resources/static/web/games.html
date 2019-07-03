@@ -36,7 +36,7 @@
             <ul>
                 <li v-for="gamePlayer in game.gamePlayers">{{gamePlayer.player.email}} <a
                         :href="'game.html?gp=' + gamePlayer.GamePlayerID" :data-id="gamePlayer.GamePlayerID"
-                        v-if="player.email == gamePlayer.player.email"> Enter</a><a href="#" v-if="(game.gamePlayer.length == 1) && (gamePlayer.player.email != player.email)" onclick="join(event)" :data-id="games.gameID">Join</a>
+                        v-if="player.email == gamePlayer.player.email"> Enter</a><a href="#" v-if="(game.gamePlayers.length == 1) && (gamePlayer.player.email != player.email)" onclick="joingame(event)" :data-id="game.gameID">Join</a>
                 </li>
             </ul>
         </li>

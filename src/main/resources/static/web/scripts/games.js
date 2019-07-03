@@ -161,6 +161,7 @@ function login(evt) {
 		username: form["username"].value,
 		password: form["password"].value
 	}).done(function(){
+	    window.location.reload()
 	    console.log("logged in")
 	}).fail(function(response){
 	    console.log(response)
@@ -169,7 +170,9 @@ function login(evt) {
 
 function logout(evt) {
 	evt.preventDefault();
-	$.post("/api/logout");
+	$.post("/api/logout").done(function(){
+	    window.location.reload()
+	});
 }
 
 function signin(evt) {
@@ -184,7 +187,7 @@ function signin(evt) {
 function joingame(evt) {
 	evt.preventDefault(evt);
 	nn = evt.target.dataset.id
-	$.post("/api/game/" + nn + "/players")
+	$.post("/api/games/" + nn + "/players")
 		.done(
 			function (response) {
 				window.location.href = "game.html?gp=" + response.gamePlayerId

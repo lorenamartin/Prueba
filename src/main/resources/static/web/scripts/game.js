@@ -6,6 +6,7 @@ var opponent
 var gpId = paramObj(window.location.href).gp
 
 fetch("/api/game_view/"+gpId)
+
 .then(function(response){
 	return response.json()
 })
@@ -36,7 +37,7 @@ fetch("/api/game_view/"+gpId)
 
 function WhoIsWho(){
   for(i = 0; i < gamesData.gamePlayers.length; i++){
-    if(gamesData.gamePlayers[i].id == gpId){
+    if(gamesData.gamePlayers[i].GamePlayerID == gpId){
       actualPlayer = gamesData.gamePlayers[i].player
     } else{
       opponent = gamesData.gamePlayers[i].player
@@ -48,7 +49,7 @@ function WhoIsWho(){
   let p1 = document.createElement('P')
   p1.innerHTML = `Hi ${actualPlayer.email}!`
   let p2 = document.createElement('P')
-  p2.innerHTML = `your opponent is: ${opponent.email}`
+  p2.innerHTML = opponent != undefined ? `your opponent is: ${opponent.email}` : "waiting your opponent"
   wrapper.appendChild(p1)
   wrapper.appendChild(p2)
   logger.appendChild(wrapper)

@@ -125,7 +125,7 @@ public Map<String, Object> getGames(Authentication authentication){
 
 
 
-@PostMapping(path= "/games/{gameID}/players")
+@PostMapping(path= "/games/{gameId}/players")
 public ResponseEntity<Map<String, Object>> joingame(Authentication authentication, @PathVariable long gameId) {
     ResponseEntity<Map<String, Object>> response;
     Game game = gameRepo.findById(gameId).orElse(null);
@@ -146,7 +146,7 @@ public ResponseEntity<Map<String, Object>> joingame(Authentication authenticatio
  return response;
          }
 
-@PostMapping("/games/players/{gpID}/ships")
+@PostMapping("/games/players/{gpId}/ships")
 public ResponseEntity<Map<String, Object>> addShips (Authentication authentication,@RequestBody List<Ship> ships, @PathVariable long gpId) {
         ResponseEntity<Map<String, Object>> response;
         Player player = playerRepo.findByUserName(authentication.getName());
