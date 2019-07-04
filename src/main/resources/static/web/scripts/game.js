@@ -62,7 +62,6 @@ function paramObj(search) {
   search.replace(reg, function(match, param, val) {
     obj[decodeURIComponent(param)] = val === undefined ? "" : decodeURIComponent(val);
   });
-
   return obj;
 }
 

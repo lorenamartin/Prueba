@@ -84,16 +84,20 @@ public Map<String, Object> getGames(Authentication authentication){
 
 @RequestMapping(path = "/players", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>>createUser(@RequestParam String username, @RequestParam String password) {
-        if (username.isEmpty() || password.isEmpty()) {
-            return new ResponseEntity<>(makeMap("error", "No data"), HttpStatus.FORBIDDEN);
-        }
-        Player player= playerRepo.findByUserName(username);
-        if (player != null) {
-            return  new ResponseEntity<>(makeMap("error", "Username already exists"), HttpStatus.CONFLICT);
-        }
-        Player newPlayer = playerRepo.save(new Player(username, passwordEncoder.encode(password)));
-          return  new ResponseEntity<>(makeMap("player", newPlayer.getUserName()), HttpStatus.CREATED);
+    ResponseEntity<Map<String, Object>> response;
 
+    if (username.isEmpty() || password.isEmpty()) {
+            response= new ResponseEntity<>(makeMap("error", "No data"), HttpStatus.FORBIDDEN);
+        }else {
+        Player player = playerRepo.findByUserName(username);
+        if (player != null) {
+            response = new ResponseEntity<>(makeMap("error", "Username already exists"), HttpStatus.CONFLICT);
+        } else {
+            Player newPlayer = playerRepo.save(new Player(username, passwordEncoder.encode(password)));
+            response = new ResponseEntity<>(makeMap("player", newPlayer.getUserName()), HttpStatus.CREATED);
+          }
+        }
+    return response;
 
 }
 

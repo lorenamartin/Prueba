@@ -181,6 +181,9 @@ function signin(evt) {
 	$.post("/api/players", {
 		username: form["username"].value,
 		password: form["password"].value
+	}).done(function(){
+	     console.log("signed in")
+	     login(evt)
 	});
 }
 

@@ -32,12 +32,12 @@
 
     <div  class="row">
     <ol >
-        <li v-for="game in games">Game #{{game.game_id}} Creation Date: {{game.created}}:
+        <li v-for="game in games">Game #{{game.gameID}} Creation Date: {{game.creationDate}}:
             <ul>
                 <li v-for="gamePlayer in game.gamePlayers">{{gamePlayer.player.email}} <a
                         :href="'game.html?gp=' + gamePlayer.GamePlayerID" :data-id="gamePlayer.GamePlayerID"
                         v-if="player.email == gamePlayer.player.email"> Enter</a><a href="#" v-if="(game.gamePlayers.length == 1) && (gamePlayer.player.email != player.email)" onclick="joingame(event)" :data-id="game.gameID">Join</a>
-                </li>
+                </li> <br>
             </ul>
         </li>
     </ol>
