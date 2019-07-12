@@ -31,8 +31,7 @@ const loadGrid = function (isStatic) {
 
 
 
-    setShips()
-    
+
     createGrid(11, $(".grid-ships"), 'ships')
 
 
@@ -87,7 +86,7 @@ const createGrid = function(size, element, id){
             cell.id = `${id}${i - 1}${ j - 1}`
             cell.classList.add(`${id}-cell`)
 
-            }
+
             if(j===0 && i > 0){
                 let textNode = document.createElement('SPAN')
                 textNode.innerText = String.fromCharCode(i+64)
