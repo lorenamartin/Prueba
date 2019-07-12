@@ -25,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/api/login");
 
         http.logout().logoutUrl("/api/logout");
+
+        http.headers().frameOptions().sameOrigin();
         // turn off checking for CSRF tokens
         http.csrf().disable();
 

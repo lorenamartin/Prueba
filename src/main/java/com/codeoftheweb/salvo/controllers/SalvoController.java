@@ -39,6 +39,9 @@ public class SalvoController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ShipRepository shipRepo;
+
 
 
 @RequestMapping("/game_view/{gamePlayerId}")
@@ -168,7 +171,7 @@ public ResponseEntity<Map<String, Object>> addShips (Authentication authenticati
         } else {
             ships.stream().forEach(ship -> gamePlayer.addShip(ship));
             gamePlayerRepo.save(gamePlayer);
-            response = new ResponseEntity<>(makeMap("success", "the ship have been placed"), HttpStatus.CREATED);
+            response = new ResponseEntity<>(makeMap("success", "the ships have been placed"), HttpStatus.CREATED);
         }
         return response;
     }
@@ -200,6 +203,9 @@ public ResponseEntity<Map<String, Object> > addSalvoes(Authentication authentica
     }
    return response;
 }
+
+
+
 
 }
 

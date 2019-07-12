@@ -206,5 +206,7 @@ function creategame(evt) {
 			window.location.href = "game.html?gp=" + response.gamePlayerId
 		}).fail(function (response) {
 			alert(response.statusText)
+
+
 		})
 }

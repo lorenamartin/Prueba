@@ -36,13 +36,25 @@ const loadGrid = function (isStatic) {
     createGrid(11, $(".grid-ships"), 'ships')
 
 
-    if(!isStatic){
-        rotateShips("carrier", 5)
-        rotateShips("battleship", 4)
-        rotateShips("submarine",3)
-        rotateShips("destroyer", 3)
-        rotateShips("patrol_boat",2)
-    }
+    if (!isStatic) {
+            grid.addWidget($('<div id="carrier"><div class="grid-stack-item-content carrierHorizontal"></div><div/>'),
+                1, 0, 5, 1);
+            grid.addWidget($('<div id="battleship"><div class="grid-stack-item-content battleshipHorizontal"></div><div/>'),
+                2, 1, 4, 1);
+            grid.addWidget($('<div id="submarine"><div class="grid-stack-item-content submarineHorizontal"></div><div/>'),
+                3, 2, 3, 1);
+            grid.addWidget($('<div id="destroyer"><div class="grid-stack-item-content destroyerHorizontal"></div><div/>'),
+                4, 3, 3, 1);
+            grid.addWidget($('<div id="patrol_boat"><div class="grid-stack-item-content patrol_boatHorizontal"></div><div/>'),
+                5, 4, 2, 1);
+            rotateShips("carrier", 5)
+            rotateShips("battleship", 4)
+            rotateShips("submarine", 3)
+            rotateShips("destroyer", 3)
+            rotateShips("patrol_boat", 2)
+        } else {
+            setShips()
+        }
 
     listenBusyCells('ships')
     $('.grid-stack').on('change', function(){

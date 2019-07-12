@@ -65,3 +65,69 @@ function paramObj(search) {
   return obj;
 }
 
+function getLocation(y) {
+    switch (y) {
+        case 0:
+            return "A";
+        case 1:
+            return "B";
+        case 2:
+            return "C";
+        case 3:
+            return "D";
+        case 4:
+            return "E";
+        case 5:
+            return "F";
+        case 6:
+            return "G";
+        case 7:
+            return "H";
+        case 8:
+            return "I";
+        case 9:
+            return "J";
+    }
+}
+
+function sendShips() {
+    var info = document.querySelectorAll(".grid-stack-item")
+    var ships = Array.from(info)
+    var data = []
+    ships.forEach(ship => {
+        let shipData = {};
+        let shipLoc = [];
+        let height = ship.dataset.gsHeight;
+        let width = ship.dataset.gsWidth;
+        let x = parseInt(ship.dataset.gsX);
+        let y = parseInt(ship.dataset.gsY);
+        shipData.type = ship.id.toUpperCase();
+        if (width > height) {
+            for (let i = 0; i < width; i++) {
+                shipLoc.push(getLocation(y) + (x + i + 1));
+            }
+        } else {
+            for (let i = 0; i < height; i++) {
+                shipLoc.push(getLocation(y + i) + (x + 1));
+            }
+        }
+        shipData.locations = shipLoc
+        data.push(shipData);
+    })
+
+    $.post({
+            url: "/api/games/players/" + gpId + "/ships",
+            data: JSON.stringify(data),
+            dataType: "text",
+            contentType: "application/json"
+        })
+        .done(function (response, status, jqXHR) {
+            alert("Ships added: " + response);
+        })
+        .fail(function (jqXHR, status, httpError) {
+            alert("Failed to add ships: " + textStatus + " " + httpError);
+        })
+    fetchData();
+    location.reload(false);
+}
+
