@@ -200,13 +200,18 @@ const setSalvoes = function(){
     for(i = 0; i < gamesData.salvoes.length; i++){
         for(j = 0; j < gamesData.salvoes[i].locations.length; j++){
             let turn = gamesData.salvoes[i].turn
-            let player = gamesData.salvoes[i].player
-            let x = +(gamesData.salvoes[i].locations[j][1]) - 1
+            let player = gamesData.player
+            let x = +(gamesData.salvoes[i].locations[j].slice(1)) - 1
             let y = stringToInt(gamesData.salvoes[i].locations[j][0].toUpperCase())
+            let isHit = gamesData.salvos[i].hits.indexOf(gamesData.salvos[i].location[j]) != - 1 ? true : false
+
 
             if(player == actualPlayer.id){
                 document.getElementById(`salvoes${y}${x}`).classList.add('salvo')
                 document.getElementById(`salvoes${y}${x}`).innerHTML = `<span>${turn}</span>`
+                if(isHit){
+                    document.getElementById(`salvoes${y}${x}`).classList.add('hit')
+                }
             }else{
                 if(document.getElementById(`ships${y}${x}`).className.indexOf('busy-cell') != -1){
                     document.getElementById(`ships${y}${x}`).classList.remove('busy-cell')
