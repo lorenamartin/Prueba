@@ -60,6 +60,7 @@ public class Salvo {
         dto.put("locations", this.getLocations());
         dto.put("turn", this.getTurn());
         dto.put("hits", this.getHits());
+        dto.put("sunk", this.getSunk());
         return dto;
     }
 /*metodo privado que calcula los hits*/
@@ -73,5 +74,16 @@ public class Salvo {
     }
     return hits;
     }
-}
 
+    public List<Map<String, Object>> getSunk() {
+        List<Map<String, Object>> sunk = new ArrayList<>();
+        List<String> locs = new ArrayList<>();
+        this.getGamePlayer().getSalvoes().stream().filter(salvo -> salvo.getTurn() <= this.getTurn()).forEach(salvo -> locs.addAll(salvo.getLocations()));
+        GamePlayer opponent = this.getGamePlayer().getGame().getGamePlayers().stream().filter(gp -> gp.getId() != this.getGamePlayer().getId()).findFirst().orElse(null);
+        if (opponent != null) {
+
+            sunk = opponent.getShips().stream().filter(ship -> locs.containsAll(ship.getlocations())).map(Ship::shipDTO).collect(Collectors.toList());
+        }
+        return sunk;
+    }
+}

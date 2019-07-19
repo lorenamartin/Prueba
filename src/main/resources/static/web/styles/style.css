@@ -203,3 +203,10 @@
     background-color: red;
 }
 
+.fired{
+background-color: purple;
+}
+
+.hit{
+    background-color: darkred;
+}

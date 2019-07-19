@@ -9,6 +9,7 @@ fetch("/api/game_view/"+gpId)
 
 .then(function(response){
 	return response.json()
+	console.log(gamesData)
 })
 .then(function(json){
 	
@@ -29,11 +30,49 @@ fetch("/api/game_view/"+gpId)
 
   createGrid(11, $(".grid-salvoes"), 'salvoes') //loads the grid for salvoes without gridstack.js
   setSalvoes() //loads the salvoes
-
+  salvoesFunction()
 })
 .catch(function(error){
 	console.log(error)
 })
+
+
+
+function fetchInfo() {
+    fetch("/api/game_view/" + gpId)
+        .then(function (response) {
+            return response.json()
+            console.log(gamesData)
+        })
+        .then(function (json) {
+            gamesData = json
+            if (gamesData.ships.length > 0) {
+                //if true, the grid is initialized in static mode, that is, the ships can't be moved
+                loadGrid(true)
+            } else {
+                //On the contrary, the grid is initialized in dynamic mode, allowing the user to move the ships
+                loadGrid(false)
+            }
+            createGrid(11, $(".grid-salvoes"), 'salvoes')
+            setSalvoes()
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+}
+
+function fetchData() {
+    fetch("/api/game_view/" + gpId)
+        .then(function (response) {
+            return response.json()
+            console.log(gamesData)
+        }).catch(function (error) {
+            console.log(error)
+        })
+}
+
+
+
 
 function WhoIsWho(){
   for(i = 0; i < gamesData.gamePlayers.length; i++){
@@ -131,3 +170,51 @@ function sendShips() {
     location.reload(false);
 }
 
+function sendSalvoes() {
+    var info = document.querySelectorAll(".fired")
+    var salvoes = Array.from(info)
+    var salvoLoc = [];
+    salvoes.forEach(salvo => {
+        var height = 1;
+        var width = 1;
+        var x = parseInt(salvo.id.slice(-1)) + 1;
+        var y = parseInt(salvo.id.slice(7, 8));
+        salvoLoc.push(getLocation(y) + (x));
+
+    })
+    $.post({
+            url: "/api/games/players/" + gpId + "/salvoes",
+            data: JSON.stringify(salvoLoc),
+            dataType: "text",
+            contentType: "application/json"
+        })
+        .done(function (response, status, jqXHR) {
+            alert("Salvoes fired: " + response);
+
+        })
+        .fail(function (jqXHR, status, httpError) {
+            alert("Salvoes not fired: " + textStatus + " " + httpError);
+        })
+}
+
+
+
+function salvoesFunction() {
+    let info = document.getElementsByClassName("salvoes-cell");
+    let salvoes = Array.from(info).filter(item => {
+        if (!item.classList.contains('salvo')) {
+            return item
+        }
+    });
+    salvoes.forEach(salvo =>
+        salvo.addEventListener("click", function (event) {
+            placeSalvoes(event)
+        }))
+}
+
+
+function placeSalvoes(event) {
+    if (!event.target.classList.contains('salvo')) {
+        event.target.classList.toggle('fired');
+    }
+}

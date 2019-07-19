@@ -177,7 +177,7 @@ public ResponseEntity<Map<String, Object>> addShips (Authentication authenticati
     }
 
 
-@PostMapping(path = "/games/players/{gamePlayerId}/salvoes")/*endpoint para ubicar los salvos*/
+@PostMapping(path = "/games/players/{gpId}/salvoes")/*endpoint para ubicar los salvos*/
 public ResponseEntity<Map<String, Object> > addSalvoes(Authentication authentication, @PathVariable long gpId, @RequestBody List<String>shots) {
     ResponseEntity<Map<String, Object>> response;
     Player player = playerRepo.findByUserName(authentication.getName());
@@ -188,10 +188,10 @@ public ResponseEntity<Map<String, Object> > addSalvoes(Authentication authentica
         response = new ResponseEntity<>(makeMap("error", "that game does not exist"), HttpStatus.NOT_FOUND);
     } else if (gamePlayer.getPlayer().getId() != player.getId()) {
         response = new ResponseEntity<>(makeMap("error", "that player is not participating in that game"), HttpStatus.NOT_FOUND);
-    }else if (gamePlayer.getShips().size() > 0) {
+    }/*else if (gamePlayer.getShips().size() > 0) {
         response = new ResponseEntity<>(makeMap("error", "you've already placed ships"), HttpStatus.NOT_FOUND);
-    }else if (shots.size() > 5) {
-        response = new ResponseEntity<>(makeMap("error", "you need 5 ships to play"), HttpStatus.FORBIDDEN);
+    }*/else if (shots.size() > 5) {
+        response = new ResponseEntity<>(makeMap("error", "you're firing more salvoes than you should"), HttpStatus.FORBIDDEN);
     }else {
         /*crear los salvos*/
         int turn = gamePlayer.getSalvoes().size() + 1;
